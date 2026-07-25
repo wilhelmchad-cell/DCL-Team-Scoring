@@ -17,20 +17,31 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
 .panel{display:none} .panel.active{display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:rgba(255,255,255,.08);padding:12px;border-radius:14px;text-align:center}
 .list{width:100%;border-collapse:collapse}.list th,.list td{border-bottom:1px solid rgba(255,255,255,.1);padding:10px 6px;text-align:left;font-size:14px;vertical-align:top}
-.scorewrap{display:grid;grid-template-columns:1fr 260px 1fr;gap:12px;align-items:stretch}.scoreteam{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:240px}.logo{width:72px;height:72px;border-radius:18px;margin:0 auto 10px;background:linear-gradient(135deg,var(--orange),#ffd08a);display:grid;place-items:center;color:#111;font-size:34px;font-weight:900}.scorename{font-size:1.1rem;font-weight:800;text-align:center;opacity:.95}.score{font-size:84px;font-weight:900;text-align:center;line-height:1;margin:18px 0 6px;color:#fff}.centerpanel{display:flex;flex-direction:column;gap:10px;justify-content:center}.centerpanel .card{margin:0}.scorepad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.scorepad button{height:64px;font-size:22px}.green{background:#3cb371}.red{background:#d9534f}.mid{background:#f5f5f5;color:#000}.ghost{background:#2a2a2a;color:#fff;border:1px solid var(--line)}.bigaction{height:58px;font-size:18px}.hidden{display:none}.fullscreen{position:fixed;inset:0;background:linear-gradient(180deg,#0f0f0f,#1b1b1b);z-index:9999;padding:14px;display:none;overflow:auto}.fullscreen.show{display:block}.fs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.fs-logo{width:110px;height:110px;border-radius:26px;background:linear-gradient(135deg,var(--orange),#ffd08a);display:grid;place-items:center;color:#111;font-size:56px;font-weight:900;margin:18px auto 8px}.fs-team{font-size:clamp(2rem,4.5vh,4rem);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05}.fs-score{font-size:clamp(110px,18vh,220px);font-weight:900;text-align:center;line-height:1;margin:6px 0 0;cursor:pointer;user-select:none;touch-action:manipulation}.fs-score.lowtap{margin-top:auto}.fs-score.highTapHint,.fs-score.lowTapHint{font-size:1rem;opacity:.9;text-align:center;margin-top:8px}.fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;margin-top:8px;height:calc(100vh - 150px)}.fs-side{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;min-height:0;height:100%}.fs-side .fs-logo{width:100px;height:100px;border-radius:24px;margin:0 auto 8px;font-size:46px}.fs-controls{display:none}.fs-bar{display:none}.timer{font-size:1.15rem;font-weight:900;text-align:center;color:#fff;margin-top:4px}.pulse{animation:pulse 1.1s infinite}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+.scorewrap{display:grid;grid-template-columns:1fr 260px 1fr;gap:12px;align-items:stretch}.scoreteam{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:240px}.logo{display:none}.scorename{font-size:1.1rem;font-weight:800;text-align:center;opacity:.95}.score{font-size:84px;font-weight:900;text-align:center;line-height:1;margin:18px 0 6px;color:#fff}.centerpanel{display:flex;flex-direction:column;gap:10px;justify-content:center}.centerpanel .card{margin:0}.scorepad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.scorepad button{height:64px;font-size:22px}.green{background:#3cb371}.red{background:#d9534f}.mid{background:#f5f5f5;color:#000}.ghost{background:#2a2a2a;color:#fff;border:1px solid var(--line)}.bigaction{height:58px;font-size:18px}.hidden{display:none}.fullscreen{position:fixed;inset:0;background:linear-gradient(180deg,#0f0f0f,#1b1b1b);z-index:9999;padding:14px;display:none;overflow:auto}.fullscreen.show{display:block}.fs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.fs-logo{display:none}.fs-team{font-size:clamp(2rem,4.5vh,4rem);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05}.fs-score{font-size:clamp(150px,30vh,340px);font-weight:900;text-align:center;line-height:1;margin:6px 0 0;cursor:pointer;user-select:none;touch-action:manipulation}.fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;margin-top:8px;height:calc(100vh - 150px)}.fs-side{background:var(--teamColor, rgba(255,255,255,.08));border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;justify-content:flex-start;gap:10px;min-height:0;height:100%;position:relative;overflow:hidden}.fs-side .fs-logo{display:none}.fs-controls{display:none}.fs-bar{display:none}.score-zone{flex:1;border-radius:14px;min-height:0}.score-up{background:transparent}.score-down{background:rgba(255,255,255,.08);margin-top:8px}.score-down:active{background:rgba(0,0,0,.18)}.timer{font-size:1.15rem;font-weight:900;text-align:center;color:#fff;margin-top:4px}.pulse{animation:pulse 1.1s infinite}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
 @media(orientation:landscape) and (min-width:700px){
   .fullscreen{padding:10px}
   .fs-top,.fs-bar,.timer{display:none}
   .fs-dual{height:100vh;margin-top:0;gap:10px}
   .fs-side{padding:14px}
   .fs-team{font-size:clamp(2.8rem,5vh,5rem)}
-  .fs-score{font-size:clamp(130px,26vh,260px)}
-  .fs-side .fs-logo{width:92px;height:92px;font-size:42px}
-  .fs-side:first-child .fs-score::after{content:'Tap top half +';display:block;font-size:1rem;opacity:.8;margin-top:8px}
-  .fs-side:last-child .fs-score::after{content:'Tap bottom half -';display:block;font-size:1rem;opacity:.8;margin-top:8px}
+  .fs-score{font-size:clamp(160px,34vh,380px)}
 }
-@media(max-width:980px){.scorewrap{grid-template-columns:1fr}.centerpanel{order:3}.scoreteam{min-height:auto}.tabs{grid-template-columns:repeat(2,1fr)}.fs-dual{grid-template-columns:1fr;height:auto}.fs-side{min-height:auto;height:auto}.fs-team{white-space:normal}.fs-score{font-size:104px}}
-@media(max-width:768px){.row,.three,.stats{grid-template-columns:1fr}.app{padding:10px}.title{font-size:1.7rem}.score{font-size:72px}}
+@media(max-width:980px){
+  .scorewrap{grid-template-columns:1fr}
+  .centerpanel{order:3}
+  .scoreteam{min-height:auto}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .fs-dual{grid-template-columns:1fr;height:auto}
+  .fs-side{min-height:auto;height:auto}
+  .fs-team{white-space:normal}
+  .fs-score{font-size:104px}
+}
+@media(max-width:768px){
+  .row,.three,.stats{grid-template-columns:1fr}
+  .app{padding:10px}
+  .title{font-size:1.7rem}
+  .score{font-size:72px}
+}
 </style>
 </head>
 <body>
@@ -71,13 +82,16 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
         <div><label>Team 2 name</label><input id="sTeam2" placeholder="Mike / Josh"></div>
       </div>
       <div class="row">
+        <div><label>Team 1 color</label><input id="sColor1" type="color" value="#ff8c00"></div>
+        <div><label>Team 2 color</label><input id="sColor2" type="color" value="#1e90ff"></div>
+      </div>
+      <div class="row">
         <div><label>Game type</label><select id="sGameType"><option>League</option><option>Run to 21</option><option>Driveway rules</option><option>Cut Throat</option><option>chairhole</option><option>Singles</option></select></div>
         <div><label>Target score</label><select id="targetScore"><option>11</option><option selected>21</option><option>15</option><option>25</option></select></div>
       </div>
-      <div class="pill">Tap the score number in full-screen mode to add 1 point. Long press or use the lower half to subtract.</div>
+      <div class="pill">Tap the top half of each box to add 1. Tap the bottom half to subtract 1.</div>
       <div class="scorewrap">
         <div class="scoreteam pulse">
-          <div class="logo">1</div>
           <div class="scorename" id="liveTeam1Name">Team 1</div>
           <div class="score" id="score1">0</div>
           <div class="scorepad">
@@ -93,7 +107,6 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
           <button id="submitScore" class="bigaction">Finish Match</button>
         </div>
         <div class="scoreteam pulse">
-          <div class="logo">2</div>
           <div class="scorename" id="liveTeam2Name">Team 2</div>
           <div class="score" id="score2">0</div>
           <div class="scorepad">
@@ -132,17 +145,17 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
   </div>
   <div class="timer" id="fsMeta">Target 21 • Live Match</div>
   <div class="fs-dual">
-    <div class="fs-side pulse" ontouchstart="this.dataset.t=Date.now()" ontouchend="if(Date.now()-(+this.dataset.t||0)<350)tapScore(1)" oncontextmenu="adjustScore(1,-1);return false;">
-      <div class="fs-logo">1</div>
+    <div class="fs-side pulse" style="--teamColor: #ff8c00;">
       <div class="fs-team" id="fsTeam1">Team 1</div>
-      <div class="fs-score" id="fsScore1" onclick="tapScore(1)">0</div>
-      <div style="text-align:center;opacity:.85">Long press or bottom tap to subtract</div>
+      <div class="fs-score" id="fsScore1">0</div>
+      <div class="score-zone score-up" onclick="tapScore(1)"></div>
+      <div class="score-zone score-down" onclick="adjustScore(1,-1)"></div>
     </div>
-    <div class="fs-side pulse" ontouchstart="this.dataset.t=Date.now()" ontouchend="if(Date.now()-(+this.dataset.t||0)<350)tapScore(2)" oncontextmenu="adjustScore(2,-1);return false;">
-      <div class="fs-logo">2</div>
+    <div class="fs-side pulse" style="--teamColor: #1e90ff;">
       <div class="fs-team" id="fsTeam2">Team 2</div>
-      <div class="fs-score" id="fsScore2" onclick="tapScore(2)">0</div>
-      <div style="text-align:center;opacity:.85">Long press or bottom tap to subtract</div>
+      <div class="fs-score" id="fsScore2">0</div>
+      <div class="score-zone score-up" onclick="tapScore(2)"></div>
+      <div class="score-zone score-down" onclick="adjustScore(2,-1)"></div>
     </div>
   </div>
   <div class="fs-bar">
@@ -186,10 +199,11 @@ function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null
 function resetScore(){live={team1:0,team2:0}; syncScoreViews()}
 function swapTeams(){
   [document.getElementById('sTeam1').value, document.getElementById('sTeam2').value] = [document.getElementById('sTeam2').value, document.getElementById('sTeam1').value];
+  [document.getElementById('sColor1').value, document.getElementById('sColor2').value] = [document.getElementById('sColor2').value, document.getElementById('sColor1').value];
   document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1';
   document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2';
-  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent;
-  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent;
+  document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
+  document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
 }
 function openFullscreen(){document.getElementById('fullscreen').classList.add('show'); swapTeams(); syncScoreViews()}
 function closeFullscreen(){document.getElementById('fullscreen').classList.remove('show')}
@@ -207,6 +221,8 @@ function render(){
   document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2'
   document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent
   document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent
+  document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
+  document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
   syncScoreViews()
 }
 for(const b of document.querySelectorAll('[data-tab]')) b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab))}
@@ -215,6 +231,8 @@ const t1p1i=document.getElementById('t1p1'),t1p2i=document.getElementById('t1p2'
 document.getElementById('submitScore').onclick=()=>{const a=clean(document.getElementById('sTeam1').value),b=clean(document.getElementById('sTeam2').value),g=document.getElementById('sGameType').value;if(!a||!b) return alert('Enter both team names'); const w=autoWinner(); if(!w) return alert('Scores are tied. Add more points before finishing.'); record([a,'Player 2'],[b,'Player 2'],g,w,'score',live.team1,live.team2); document.getElementById('sTeam1').value=''; document.getElementById('sTeam2').value=''; resetScore(); render(); closeFullscreen(); alert('Match finished')}
 document.getElementById('sTeam1').addEventListener('input',render)
 document.getElementById('sTeam2').addEventListener('input',render)
+document.getElementById('sColor1').addEventListener('input',render)
+document.getElementById('sColor2').addEventListener('input',render)
 render()
 </script>
 </body>
