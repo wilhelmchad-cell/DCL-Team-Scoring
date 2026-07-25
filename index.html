@@ -17,33 +17,7 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
 .panel{display:none} .panel.active{display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:rgba(255,255,255,.08);padding:12px;border-radius:14px;text-align:center}
 .list{width:100%;border-collapse:collapse}.list th,.list td{border-bottom:1px solid rgba(255,255,255,.1);padding:10px 6px;text-align:left;font-size:14px;vertical-align:top}
-.scorewrap{display:grid;grid-template-columns:1fr 260px 1fr;gap:12px;align-items:stretch}.scoreteam{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:240px}.logo{display:none}.scorename{font-size:1.1rem;font-weight:800;text-align:center;opacity:.95}.score{font-size:84px;font-weight:900;text-align:center;line-height:1;margin:18px 0 6px;color:#fff}.centerpanel{display:flex;flex-direction:column;gap:10px;justify-content:center}.centerpanel .card{margin:0}.scorepad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.scorepad button{height:64px;font-size:22px}.green{background:#3cb371}.red{background:#d9534f}.mid{background:#f5f5f5;color:#000}.ghost{background:#2a2a2a;color:#fff;border:1px solid var(--line)}.bigaction{height:58px;font-size:18px}.hidden{display:none}.fullscreen{position:fixed;inset:0;background:linear-gradient(180deg,#0f0f0f,#1b1b1b);z-index:9999;padding:10px;display:none;overflow:hidden}.fullscreen.show{display:block}.fs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.fs-logo{display:none}.fs-team{font-size:clamp(2rem,4.5vh,4rem);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05}.fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:100vh}.fs-side{background:var(--teamColor, rgba(255,255,255,.08));border:1px solid var(--line);border-radius:18px;padding:10px;display:flex;flex-direction:column;justify-content:flex-start;gap:8px;min-height:0;height:100%;position:relative;overflow:hidden}.fs-controls{display:none}.fs-bar{display:none}.score-zone{flex:1;border-radius:14px;min-height:0}.score-up{background:transparent}.score-down{background:rgba(255,255,255,.08);margin-top:8px}.score-down:active{background:rgba(0,0,0,.18)}.timer{font-size:1.15rem;font-weight:900;text-align:center;color:#fff;margin-top:4px}
-.fs-svgwrap{width:100%;height:100%;display:grid;place-items:center;overflow:hidden}
-.fs-svg{width:100%;height:100%}
-.fs-svg text{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:900;fill:#fff;text-anchor:middle;dominant-baseline:middle}
-.fs-score-label{font-size:22px;fill:rgba(255,255,255,.85);font-weight:700}
-@media(orientation:landscape) and (min-width:700px){
-  .fullscreen{padding:8px}
-  .fs-top,.fs-bar,.timer{display:none}
-  .fs-dual{height:100vh;gap:8px}
-  .fs-side{padding:8px}
-  .fs-team{font-size:clamp(2.8rem,5vh,5rem)}
-}
-@media(max-width:980px){
-  .scorewrap{grid-template-columns:1fr}
-  .centerpanel{order:3}
-  .scoreteam{min-height:auto}
-  .tabs{grid-template-columns:repeat(2,1fr)}
-  .fs-dual{grid-template-columns:1fr;height:auto}
-  .fs-side{min-height:60vh;height:auto}
-  .fs-team{white-space:normal}
-}
-@media(max-width:768px){
-  .row,.three,.stats{grid-template-columns:1fr}
-  .app{padding:10px}
-  .title{font-size:1.7rem}
-  .score{font-size:72px}
-}
+.scorewrap{display:grid;grid-template-columns:1fr 260px 1fr;gap:12px;align-items:stretch}.scoreteam{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:240px}.logo{display:none}.scorename{font-size:1.1rem;font-weight:800;text-align:center;opacity:.95}.score{font-size:84px;font-weight:900;text-align:center;line-height:1;margin:18px 0 6px;color:#fff}.centerpanel{display:flex;flex-direction:column;gap:10px;justify-content:center}.centerpanel .card{margin:0}.scorepad{display:grid;grid-template-columns:1fr 1fr;gap:8px}.scorepad button{height:64px;font-size:22px}.green{background:#3cb371}.red{background:#d9534f}.mid{background:#f5f5f5;color:#000}.ghost{background:#2a2a2a;color:#fff;border:1px solid var(--line)}.bigaction{height:58px;font-size:18px}.hidden{display:none}.fullscreen{position:fixed;inset:0;background:linear-gradient(180deg,#0f0f0f,#1b1b1b);z-index:9999;padding:8px;display:none;overflow:hidden}.fullscreen.show{display:block}.fs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.fs-team{font-size:clamp(2rem,4.5vh,4rem);font-weight:900;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05}.fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100vh}.fs-side{background:var(--teamColor, rgba(255,255,255,.08));border:1px solid var(--line);border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:0;height:100%;position:relative;overflow:hidden}.fs-bar{display:none}.score-zone{flex:1;border-radius:14px;min-height:0;pointer-events:auto}.score-up{background:transparent}.score-down{background:rgba(255,255,255,.08);margin-top:8px;touch-action:manipulation}.score-down:active{background:rgba(0,0,0,.18)}.timer{font-size:1.15rem;font-weight:900;text-align:center;color:#fff;margin-top:4px}.fs-svgwrap{width:100%;flex:1;min-height:0;display:grid;place-items:center;overflow:hidden;pointer-events:auto}.fs-svg{width:100%;height:100%;display:block;pointer-events:none}.fs-svg text{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:900;fill:#fff;text-anchor:middle;dominant-baseline:middle}.fs-teamname{font-size:clamp(1.5rem,3.5vh,3rem);text-align:center;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pulse{animation:none}@media(orientation:landscape) and (min-width:700px){.fullscreen{padding:6px}.fs-top,.timer{display:none}.fs-dual{height:100vh}.fs-side{padding:6px}}@media(max-width:980px){.scorewrap{grid-template-columns:1fr}.centerpanel{order:3}.scoreteam{min-height:auto}.tabs{grid-template-columns:repeat(2,1fr)}.fs-dual{grid-template-columns:1fr;height:auto}.fs-side{min-height:55vh;height:auto}.fs-teamname{white-space:normal}}@media(max-width:768px){.row,.three,.stats{grid-template-columns:1fr}.app{padding:10px}.title{font-size:1.7rem}.score{font-size:72px}}
 </style>
 </head>
 <body>
@@ -148,30 +122,25 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
   <div class="timer" id="fsMeta">Target 21 • Live Match</div>
   <div class="fs-dual">
     <div class="fs-side" style="--teamColor:#ff8c00;">
-      <div class="fs-team" id="fsTeam1">Team 1</div>
-      <div class="fs-svgwrap" onclick="tapScore(1)">
+      <div class="fs-teamname" id="fsTeam1">Team 1</div>
+      <div class="fs-svgwrap" id="fsZone1">
         <svg class="fs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-          <text x="500" y="500" id="fsScore1" style="font-size:700px;">0</text>
+          <text x="500" y="540" id="fsScore1" style="font-size:700px;">0</text>
         </svg>
       </div>
-      <div class="score-zone score-up" onclick="tapScore(1)"></div>
-      <div class="score-zone score-down" onclick="adjustScore(1,-1)"></div>
+      <div class="score-zone score-up" id="up1"></div>
+      <div class="score-zone score-down" id="down1"></div>
     </div>
     <div class="fs-side" style="--teamColor:#1e90ff;">
-      <div class="fs-team" id="fsTeam2">Team 2</div>
-      <div class="fs-svgwrap" onclick="tapScore(2)">
+      <div class="fs-teamname" id="fsTeam2">Team 2</div>
+      <div class="fs-svgwrap" id="fsZone2">
         <svg class="fs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-          <text x="500" y="500" id="fsScore2" style="font-size:700px;">0</text>
+          <text x="500" y="540" id="fsScore2" style="font-size:700px;">0</text>
         </svg>
       </div>
-      <div class="score-zone score-up" onclick="tapScore(2)"></div>
-      <div class="score-zone score-down" onclick="adjustScore(2,-1)"></div>
+      <div class="score-zone score-up" id="up2"></div>
+      <div class="score-zone score-down" id="down2"></div>
     </div>
-  </div>
-  <div class="fs-bar">
-    <button class="ghost" onclick="resetScore()">Reset</button>
-    <button class="mid" id="fsWinnerBtn">Winner: —</button>
-    <button class="ghost" onclick="closeFullscreen()">Close</button>
   </div>
 </div>
 
@@ -179,7 +148,7 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
 const KEY='dcl_team_tracker_v4';
 let state=load();
 let live={team1:0,team2:0};
-let lastTap={1:0,2:0};
+let longPressTimers={1:null,2:null};
 function load(){return JSON.parse(localStorage.getItem(KEY)||JSON.stringify({matches:[],scores:[],players:{},teams:{},opponents:{}}))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function clean(s){return s.trim().replace(/s+/g,' ').replace(/\bw/g,c=>c.toUpperCase())}
@@ -188,10 +157,22 @@ function ensurePlayer(n){if(!state.players[n]) state.players[n]={wins:0,losses:0
 function ensureTeam(p){let k=teamKey(p); if(!state.teams[k]) state.teams[k]={players:p,wins:0,losses:0}; return k}
 function autoWinner(){if(live.team1===live.team2) return null; return live.team1>live.team2?'team1':'team2'}
 function winnerLabel(){const w=autoWinner(); return w==='team1'?'Team 1':w==='team2'?'Team 2':'Tie'}
-function updateWinnerBadge(){document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel(); document.getElementById('fsWinnerBtn').textContent='Winner: '+winnerLabel()}
+function updateWinnerBadge(){document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel(); document.getElementById('fsMeta').textContent='Target '+document.getElementById('targetScore').value+' • '+winnerLabel()}
 function syncScoreViews(){document.getElementById('score1').textContent=live.team1; document.getElementById('score2').textContent=live.team2; document.getElementById('fsScore1').textContent=live.team1; document.getElementById('fsScore2').textContent=live.team2; updateWinnerBadge(); save()}
 function adjustScore(team,delta){live['team'+team]=Math.max(0, live['team'+team]+delta); syncScoreViews()}
-function tapScore(team){const now=Date.now(); if(now-lastTap[team]<350){adjustScore(team,-1); lastTap[team]=0; return} lastTap[team]=now; adjustScore(team,1)}
+function startLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=setTimeout(()=>adjustScore(team,-1),450)}
+function endLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=null}
+function wireTeam(team){
+  document.getElementById('up'+team).addEventListener('click',()=>adjustScore(team,1))
+  document.getElementById('down'+team).addEventListener('click',()=>adjustScore(team,-1))
+  const z=document.getElementById('fsZone'+team)
+  z.addEventListener('click',()=>adjustScore(team,1))
+  z.addEventListener('pointerdown',()=>startLongPress(team))
+  z.addEventListener('pointerup',()=>endLongPress(team))
+  z.addEventListener('pointercancel',()=>endLongPress(team))
+  z.addEventListener('pointerleave',()=>endLongPress(team))
+}
+wireTeam(1); wireTeam(2);
 function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null){
   [...team1,...team2].forEach(ensurePlayer)
   const k1=ensureTeam(team1), k2=ensureTeam(team2)
@@ -205,6 +186,7 @@ function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null
   const entry={time:new Date().toLocaleString(),gameType,team1,team2,winner,mode}
   if(score1!==null){entry.score1=score1; entry.score2=score2}
   if(mode==='score') state.scores.unshift(entry); else state.matches.unshift(entry)
+  save()
 }
 function resetScore(){live={team1:0,team2:0}; syncScoreViews()}
 function swapTeams(){
@@ -212,6 +194,8 @@ function swapTeams(){
   [document.getElementById('sColor1').value, document.getElementById('sColor2').value] = [document.getElementById('sColor2').value, document.getElementById('sColor1').value];
   document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1';
   document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2';
+  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent;
+  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent;
   document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
   document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
 }
@@ -243,6 +227,7 @@ document.getElementById('sTeam1').addEventListener('input',render)
 document.getElementById('sTeam2').addEventListener('input',render)
 document.getElementById('sColor1').addEventListener('input',render)
 document.getElementById('sColor2').addEventListener('input',render)
+document.getElementById('targetScore').addEventListener('change',updateWinnerBadge)
 render()
 </script>
 </body>
