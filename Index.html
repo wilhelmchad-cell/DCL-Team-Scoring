@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -51,4 +50,165 @@ input,select{background:#fff;color:#000} button{background:var(--orange);color:#
       </div>
       <div style="margin-top:12px"><button id="saveMatch">Save Match</button></div>
     </div>
-  <
+  </div>
+
+  <div id="score" class="panel">
+    <div class="card">
+      <h2 style="margin-top:0">Match Scoring</h2>
+      <div class="row">
+        <div><label>Team 1 name</label><input id="sTeam1" placeholder="Chris / Aiden"></div>
+        <div><label>Team 2 name</label><input id="sTeam2" placeholder="Mike / Josh"></div>
+      </div>
+      <div class="row">
+        <div><label>Game type</label><select id="sGameType"><option>League</option><option>Run to 21</option><option>Driveway rules</option><option>Cut Throat</option><option>chairhole</option><option>Singles</option></select></div>
+        <div><label>Target score</label><select id="targetScore"><option>11</option><option selected>21</option><option>15</option><option>25</option></select></div>
+      </div>
+      <div class="pill">Tap score buttons or open full-screen scoreboard for a cleaner tablet view.</div>
+      <div class="scorewrap">
+        <div class="scoreteam pulse">
+          <div class="logo">1</div>
+          <div class="scorename" id="liveTeam1Name">Team 1</div>
+          <div class="score" id="score1">0</div>
+          <div class="scorepad">
+            <button class="green bigaction" onclick="adjustScore(1,1)">+1</button>
+            <button class="red bigaction" onclick="adjustScore(1,-1)">-1</button>
+          </div>
+        </div>
+        <div class="centerpanel">
+          <button class="ghost bigaction" onclick="swapTeams()">Swap Sides</button>
+          <button class="ghost bigaction" onclick="resetScore()">Reset Score</button>
+          <button class="mid bigaction" id="autoWinnerBtn">Winner: —</button>
+          <button class="bigaction" onclick="openFullscreen()">Full Screen Scoreboard</button>
+          <button id="submitScore" class="bigaction">Finish Match</button>
+        </div>
+        <div class="scoreteam pulse">
+          <div class="logo">2</div>
+          <div class="scorename" id="liveTeam2Name">Team 2</div>
+          <div class="score" id="score2">0</div>
+          <div class="scorepad">
+            <button class="green bigaction" onclick="adjustScore(2,1)">+1</button>
+            <button class="red bigaction" onclick="adjustScore(2,-1)">-1</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;opacity:.85">Designed to feel like a scoreboard first, with stats saved automatically after each match.</div>
+    </div>
+  </div>
+
+  <div id="stats" class="panel">
+    <div class="stats">
+      <div class="stat"><div>Matches</div><h2 id="matchCount">0</h2></div>
+      <div class="stat"><div>Teams</div><h2 id="teamCount">0</h2></div>
+      <div class="stat"><div>Players</div><h2 id="playerCount">0</h2></div>
+      <div class="stat"><div>Score Games</div><h2 id="scoreCount">0</h2></div>
+    </div>
+    <div class="card"><h3 style="margin-top:0">Team Standings</h3><div id="teamTable"></div></div>
+    <div class="card"><h3 style="margin-top:0">Individual Standings</h3><div id="playerTable"></div></div>
+    <div class="card"><h3 style="margin-top:0">Opponent Records</h3><div id="oppTable"></div></div>
+  </div>
+
+  <div id="history" class="panel">
+    <div class="card"><h3 style="margin-top:0">Match History</h3><div id="matchTable"></div></div>
+    <div class="card"><h3 style="margin-top:0">Score History</h3><div id="scoreTable"></div></div>
+  </div>
+</div>
+
+<div id="fullscreen" class="fullscreen">
+  <div class="fs-top">
+    <button class="ghost" onclick="closeFullscreen()">Exit</button>
+    <div style="font-weight:900;color:var(--orange)">DCL Scoreboard</div>
+    <button class="ghost" onclick="swapTeams()">Swap</button>
+  </div>
+  <div class="timer" id="fsMeta">Target 21 • Live Match</div>
+  <div class="fs-dual">
+    <div class="fs-side pulse">
+      <div class="fs-logo">1</div>
+      <div class="fs-team" id="fsTeam1">Team 1</div>
+      <div class="fs-score" id="fsScore1">0</div>
+      <div class="fs-controls">
+        <button class="green" onclick="adjustScore(1,1)">+1</button>
+        <button class="red" onclick="adjustScore(1,-1)">-1</button>
+      </div>
+    </div>
+    <div class="fs-side pulse">
+      <div class="fs-logo">2</div>
+      <div class="fs-team" id="fsTeam2">Team 2</div>
+      <div class="fs-score" id="fsScore2">0</div>
+      <div class="fs-controls">
+        <button class="green" onclick="adjustScore(2,1)">+1</button>
+        <button class="red" onclick="adjustScore(2,-1)">-1</button>
+      </div>
+    </div>
+  </div>
+  <div class="fs-bar">
+    <button class="ghost" onclick="resetScore()">Reset</button>
+    <button class="mid" id="fsWinnerBtn">Winner: —</button>
+    <button class="ghost" onclick="closeFullscreen()">Close</button>
+  </div>
+</div>
+
+<script>
+const KEY='dcl_team_tracker_v4';
+let state=load();
+let live={team1:0,team2:0};
+function load(){return JSON.parse(localStorage.getItem(KEY)||JSON.stringify({matches:[],scores:[],players:{},teams:{},opponents:{}}))}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function clean(s){return s.trim().replace(/s+/g,' ').replace(/\bw/g,c=>c.toUpperCase())}
+function teamKey(p){return [...p].sort().join(' | ')}
+function ensurePlayer(n){if(!state.players[n]) state.players[n]={wins:0,losses:0}}
+function ensureTeam(p){let k=teamKey(p); if(!state.teams[k]) state.teams[k]={players:p,wins:0,losses:0}; return k}
+function autoWinner(){if(live.team1===live.team2) return null; return live.team1>live.team2?'team1':'team2'}
+function winnerLabel(){const w=autoWinner(); return w==='team1'?'Team 1':w==='team2'?'Team 2':'Tie'}
+function updateWinnerBadge(){document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel(); document.getElementById('fsWinnerBtn').textContent='Winner: '+winnerLabel()}
+function syncScoreViews(){document.getElementById('score1').textContent=live.team1; document.getElementById('score2').textContent=live.team2; document.getElementById('fsScore1').textContent=live.team1; document.getElementById('fsScore2').textContent=live.team2; updateWinnerBadge(); save()}
+function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null){
+  [...team1,...team2].forEach(ensurePlayer)
+  const k1=ensureTeam(team1), k2=ensureTeam(team2)
+  const wteam=winner==='team1'?team1:team2, lteam=winner==='team1'?team2:team1
+  state.teams[k1][winner==='team1'?'wins':'losses']++
+  state.teams[k2][winner==='team2'?'wins':'losses']++
+  wteam.forEach(p=>state.players[p].wins++)
+  lteam.forEach(p=>state.players[p].losses++)
+  state.opponents[k1]??={}; state.opponents[k2]??={}; state.opponents[k1][k2]??={wins:0,losses:0}; state.opponents[k2][k1]??={wins:0,losses:0}
+  if(winner==='team1'){state.opponents[k1][k2].wins++; state.opponents[k2][k1].losses++} else {state.opponents[k1][k2].losses++; state.opponents[k2][k1].wins++}
+  const entry={time:new Date().toLocaleString(),gameType,team1,team2,winner,mode}
+  if(score1!==null){entry.score1=score1; entry.score2=score2}
+  if(mode==='score') state.scores.unshift(entry); else state.matches.unshift(entry)
+}
+function adjustScore(team,delta){live['team'+team]=Math.max(0, live['team'+team]+delta); syncScoreViews()}
+function resetScore(){live={team1:0,team2:0}; syncScoreViews()}
+function swapTeams(){
+  [document.getElementById('sTeam1').value, document.getElementById('sTeam2').value] = [document.getElementById('sTeam2').value, document.getElementById('sTeam1').value];
+  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1';
+  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2';
+  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent;
+  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent;
+}
+function openFullscreen(){document.getElementById('fullscreen').classList.add('show'); swapTeams(); syncScoreViews()}
+function closeFullscreen(){document.getElementById('fullscreen').classList.remove('show')}
+function render(){
+  document.getElementById('matchCount').textContent=state.matches.length
+  document.getElementById('teamCount').textContent=Object.keys(state.teams).length
+  document.getElementById('playerCount').textContent=Object.keys(state.players).length
+  document.getElementById('scoreCount').textContent=state.scores.length
+  document.getElementById('teamTable').innerHTML=`<table class='list'><tr><th>Team</th><th>W</th><th>L</th></tr>${Object.entries(state.teams).sort((a,b)=>b[1].wins-a[1].wins).map(([k,v])=>`<tr><td>${k}</td><td>${v.wins}</td><td>${v.losses}</td></tr>`).join('')||'<tr><td colspan="3">No teams yet.</td></tr>'}</table>`
+  document.getElementById('playerTable').innerHTML=`<table class='list'><tr><th>Player</th><th>W</th><th>L</th></tr>${Object.entries(state.players).sort((a,b)=>b[1].wins-a[1].wins).map(([k,v])=>`<tr><td>${k}</td><td>${v.wins}</td><td>${v.losses}</td></tr>`).join('')||'<tr><td colspan="3">No players yet.</td></tr>'}</table>`
+  document.getElementById('oppTable').innerHTML=`<table class='list'><tr><th>Team</th><th>Opponent</th><th>W</th><th>L</th></tr>${Object.entries(state.opponents).flatMap(([team,opps])=>Object.entries(opps).map(([opp,rec])=>`<tr><td>${team}</td><td>${opp}</td><td>${rec.wins}</td><td>${rec.losses}</td></tr>`)).join('')||'<tr><td colspan="4">No opponent records yet.</td></tr>'}</table>`
+  document.getElementById('matchTable').innerHTML=`<table class='list'><tr><th>Time</th><th>Game</th><th>Team 1</th><th>Team 2</th><th>Winner</th></tr>${state.matches.map(m=>`<tr><td>${m.time}</td><td>${m.gameType}</td><td>${m.team1.join(' / ')}</td><td>${m.team2.join(' / ')}</td><td>${m.winner==='team1'?'Team 1':'Team 2'}</td></tr>`).join('')||'<tr><td colspan="5">No matches yet.</td></tr>'}</table>`
+  document.getElementById('scoreTable').innerHTML=`<table class='list'><tr><th>Time</th><th>Game</th><th>Team 1</th><th>Team 2</th><th>Score</th></tr>${state.scores.map(m=>`<tr><td>${m.time}</td><td>${m.gameType}</td><td>${m.team1.join(' / ')}</td><td>${m.team2.join(' / ')}</td><td>${m.score1}-${m.score2}</td></tr>`).join('')||'<tr><td colspan="5">No score games yet.</td></tr>'}</table>`
+  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1'
+  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2'
+  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent
+  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent
+  syncScoreViews()
+}
+for(const b of document.querySelectorAll('[data-tab]')) b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab))}
+document.getElementById('saveMatch').onclick=()=>{const t1p1=clean(t1p1i.value),t1p2=clean(t1p2i.value),t2p1=clean(t2p1i.value),t2p2=clean(t2p2i.value),gameType=gameTypei.value,winner=winneri.value;if(!t1p1||!t1p2||!t2p1||!t2p2) return alert('Fill all player names'); if(new Set([t1p1,t1p2,t2p1,t2p2]).size!==4) return alert('Each player must be unique in a match'); record([t1p1,t1p2],[t2p1,t2p2],gameType,winner,'match'); ['t1p1','t1p2','t2p1','t2p2'].forEach(id=>document.getElementById(id).value=''); render()}
+const t1p1i=document.getElementById('t1p1'),t1p2i=document.getElementById('t1p2'),t2p1i=document.getElementById('t2p1'),t2p2i=document.getElementById('t2p2'),gameTypei=document.getElementById('gameType'),winneri=document.getElementById('winner')
+document.getElementById('submitScore').onclick=()=>{const a=clean(document.getElementById('sTeam1').value),b=clean(document.getElementById('sTeam2').value),g=document.getElementById('sGameType').value;if(!a||!b) return alert('Enter both team names'); const w=autoWinner(); if(!w) return alert('Scores are tied. Add more points before finishing.'); record([a,'Player 2'],[b,'Player 2'],g,w,'score',live.team1,live.team2); document.getElementById('sTeam1').value=''; document.getElementById('sTeam2').value=''; resetScore(); render(); closeFullscreen(); alert('Match finished')}
+document.getElementById('sTeam1').addEventListener('input',render)
+document.getElementById('sTeam2').addEventListener('input',render)
+render()
+</script>
+</body>
+</html>
