@@ -43,64 +43,87 @@ button{background:var(--orange);color:#000;font-weight:900}
 .fullscreen.show{display:block}
 .fs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100vh}
-.fs-side{background:var(--teamColor, rgba(255,255,255,.08));border:1px solid var(--line);border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:0;height:100%;position:relative;overflow:hidden}
-.fs-teamname{font-size:clamp(1.5rem,3.5vh,3rem);text-align:center;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fs-scorezone{
-  flex:1;
-  position:relative;
+.fs-side{
+  background:var(--teamColor, rgba(255,255,255,.08));
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
   min-height:0;
+  height:100%;
+  position:relative;
   overflow:hidden;
+}
+.fs-teamname{
+  flex:0 0 auto;
+  font-size:clamp(1.5rem,3.5vh,3rem);
+  text-align:center;
+  font-weight:900;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.fs-scorezone{
+  flex:1 1 auto;
   display:flex;
   align-items:center;
   justify-content:center;
+  min-height:0;
+  overflow:hidden;
   touch-action:manipulation;
 }
 .fs-score{
+  width:100%;
+  height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  width:100%;
-  height:100%;
-  font-weight:900;
-  color:#fff;
   line-height:1;
-  text-align:center;
   user-select:none;
   -webkit-user-select:none;
-  transform:translateY(0.03em);
+  transform:translateY(0.02em);
 }
 .fs-score span{
   font-size:clamp(220px, 28vw, 560px);
+  font-weight:900;
+  color:#fff;
   line-height:1;
   display:block;
 }
-.score-zone{flex:1;border-radius:14px;min-height:0;pointer-events:auto}
+.score-zone{
+  flex:1;
+  border-radius:14px;
+  min-height:0;
+  pointer-events:auto;
+}
 .score-up{background:transparent}
 .score-down{background:rgba(255,255,255,.08);margin-top:8px;touch-action:manipulation}
 .score-down:active{background:rgba(0,0,0,.18)}
 .timer{font-size:1.15rem;font-weight:900;text-align:center;color:#fff;margin-top:4px}
 @media(orientation:landscape) and (min-width:700px){
-.fullscreen{padding:6px}
-.fs-top,.timer{display:none}
-.fs-dual{height:100vh}
-.fs-side{padding:6px}
+  .fullscreen{padding:6px}
+  .fs-top,.timer{display:none}
+  .fs-dual{height:100vh}
+  .fs-side{padding:6px}
 }
 @media(max-width:980px){
-.scorewrap{grid-template-columns:1fr}
-.centerpanel{order:3}
-.scoreteam{min-height:auto}
-.tabs{grid-template-columns:repeat(2,1fr)}
-.fs-dual{grid-template-columns:1fr;height:auto}
-.fs-side{min-height:55vh;height:auto}
-.fs-teamname{white-space:normal}
-.fs-score span{font-size:clamp(180px, 42vw, 500px)}
+  .scorewrap{grid-template-columns:1fr}
+  .centerpanel{order:3}
+  .scoreteam{min-height:auto}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .fs-dual{grid-template-columns:1fr;height:auto}
+  .fs-side{min-height:55vh;height:auto}
+  .fs-teamname{white-space:normal}
+  .fs-score span{font-size:clamp(180px, 42vw, 500px)}
 }
 @media(max-width:768px){
-.row,.stats{grid-template-columns:1fr}
-.app{padding:10px}
-.title{font-size:1.7rem}
-.score{font-size:72px}
-.fs-score span{font-size:clamp(160px, 48vw, 420px)}
+  .row,.stats{grid-template-columns:1fr}
+  .app{padding:10px}
+  .title{font-size:1.7rem}
+  .score{font-size:72px}
+  .fs-score span{font-size:clamp(160px, 48vw, 420px)}
 }
 </style>
 </head>
@@ -237,7 +260,14 @@ function ensureTeam(p){let k=teamKey(p); if(!state.teams[k]) state.teams[k]={pla
 function autoWinner(){if(live.team1===live.team2) return null; return live.team1>live.team2?'team1':'team2'}
 function winnerLabel(){const w=autoWinner(); return w==='team1'?'Team 1':w==='team2'?'Team 2':'Tie'}
 function updateWinnerBadge(){document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel(); document.getElementById('fsMeta').textContent='Target '+document.getElementById('targetScore').value+' • '+winnerLabel()}
-function syncScoreViews(){document.getElementById('score1').textContent=live.team1; document.getElementById('score2').textContent=live.team2; document.getElementById('fsScore1').textContent=live.team1; document.getElementById('fsScore2').textContent=live.team2; updateWinnerBadge(); save()}
+function syncScoreViews(){
+  document.getElementById('score1').textContent=live.team1
+  document.getElementById('score2').textContent=live.team2
+  document.getElementById('fsScore1').textContent=live.team1
+  document.getElementById('fsScore2').textContent=live.team2
+  updateWinnerBadge()
+  save()
+}
 function adjustScore(team,delta){live['team'+team]=Math.max(0, live['team'+team]+delta); syncScoreViews()}
 function startLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=setTimeout(()=>adjustScore(team,-1),450)}
 function endLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=null}
