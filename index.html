@@ -45,9 +45,34 @@ button{background:var(--orange);color:#000;font-weight:900}
 .fs-dual{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:100vh}
 .fs-side{background:var(--teamColor, rgba(255,255,255,.08));border:1px solid var(--line);border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:0;height:100%;position:relative;overflow:hidden}
 .fs-teamname{font-size:clamp(1.5rem,3.5vh,3rem);text-align:center;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fs-svgwrap{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:auto}
-.fs-svg{width:100%;height:100%;display:block}
-.fs-svg text{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:900;fill:#fff;text-anchor:middle;dominant-baseline:middle}
+.fs-scorezone{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:0;
+  position:relative;
+  overflow:hidden;
+  touch-action:manipulation;
+}
+.fs-score{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  color:#fff;
+  line-height:1;
+  text-align:center;
+  user-select:none;
+  -webkit-user-select:none;
+  transform: translateY(0.02em);
+}
+.fs-score span{
+  display:block;
+  font-size:clamp(180px, 26vw, 520px);
+}
 .score-zone{flex:1;border-radius:14px;min-height:0;pointer-events:auto}
 .score-down{background:rgba(255,255,255,.08);margin-top:8px;touch-action:manipulation}
 .score-down:active{background:rgba(0,0,0,.18)}
@@ -66,12 +91,14 @@ button{background:var(--orange);color:#000;font-weight:900}
 .fs-dual{grid-template-columns:1fr;height:auto}
 .fs-side{min-height:55vh;height:auto}
 .fs-teamname{white-space:normal}
+.fs-score span{font-size:clamp(160px, 38vw, 460px)}
 }
 @media(max-width:768px){
 .row,.stats{grid-template-columns:1fr}
 .app{padding:10px}
 .title{font-size:1.7rem}
 .score{font-size:72px}
+.fs-score span{font-size:clamp(140px, 44vw, 380px)}
 }
 </style>
 </head>
@@ -177,20 +204,16 @@ button{background:var(--orange);color:#000;font-weight:900}
   <div class="fs-dual">
     <div class="fs-side" style="--teamColor:#ff8c00;">
       <div class="fs-teamname" id="fsTeam1">Team 1</div>
-      <div class="fs-svgwrap" id="fsZone1">
-        <svg class="fs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-          <text x="50%" y="50%" id="fsScore1" style="font-size:2000px;">0</text>
-        </svg>
+      <div class="fs-scorezone" id="fsZone1">
+        <div class="fs-score"><span id="fsScore1">0</span></div>
       </div>
       <div class="score-zone score-up" id="up1"></div>
       <div class="score-zone score-down" id="down1"></div>
     </div>
     <div class="fs-side" style="--teamColor:#1e90ff;">
       <div class="fs-teamname" id="fsTeam2">Team 2</div>
-      <div class="fs-svgwrap" id="fsZone2">
-        <svg class="fs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-          <text x="50%" y="50%" id="fsScore2" style="font-size:2000px;">0</text>
-        </svg>
+      <div class="fs-scorezone" id="fsZone2">
+        <div class="fs-score"><span id="fsScore2">0</span></div>
       </div>
       <div class="score-zone score-up" id="up2"></div>
       <div class="score-zone score-down" id="down2"></div>
@@ -199,10 +222,10 @@ button{background:var(--orange);color:#000;font-weight:900}
 </div>
 
 <script>
-const KEY='dcl_team_tracker_v4';
-let state=load();
-let live={team1:0,team2:0};
-let longPressTimers={1:null,2:null};
+const KEY='dcl_team_tracker_v4'
+let state=load()
+let live={team1:0,team2:0}
+let longPressTimers={1:null,2:null}
 function load(){return JSON.parse(localStorage.getItem(KEY)||JSON.stringify({matches:[],scores:[],players:{},teams:{},opponents:{}}))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function clean(s){return s.trim().replace(/s+/g,' ').replace(/\bw/g,c=>c.toUpperCase())}
@@ -226,7 +249,7 @@ function wireTeam(team){
   z.addEventListener('pointercancel',()=>endLongPress(team))
   z.addEventListener('pointerleave',()=>endLongPress(team))
 }
-wireTeam(1); wireTeam(2);
+wireTeam(1); wireTeam(2)
 function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null){
   [...team1,...team2].forEach(ensurePlayer)
   const k1=ensureTeam(team1), k2=ensureTeam(team2)
@@ -244,12 +267,12 @@ function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null
 }
 function resetScore(){live={team1:0,team2:0}; syncScoreViews()}
 function swapTeams(){
-  [document.getElementById('sTeam1').value, document.getElementById('sTeam2').value] = [document.getElementById('sTeam2').value, document.getElementById('sTeam1').value];
-  [document.getElementById('sColor1').value, document.getElementById('sColor2').value] = [document.getElementById('sColor2').value, document.getElementById('sColor1').value];
-  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1';
-  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2';
-  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent;
-  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent;
+  [document.getElementById('sTeam1').value, document.getElementById('sTeam2').value] = [document.getElementById('sTeam2').value, document.getElementById('sTeam1').value]
+  [document.getElementById('sColor1').value, document.getElementById('sColor2').value] = [document.getElementById('sColor2').value, document.getElementById('sColor1').value]
+  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1'
+  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2'
+  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent
+  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent
   document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
   document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
 }
@@ -274,9 +297,28 @@ function render(){
   syncScoreViews()
 }
 for(const b of document.querySelectorAll('[data-tab]')) b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab))}
-document.getElementById('saveMatch').onclick=()=>{const t1p1=clean(t1p1i.value),t1p2=clean(t1p2i.value),t2p1=clean(t2p1i.value),t2p2=clean(t2p2i.value),gameType=gameTypei.value,winner=winneri.value;if(!t1p1||!t1p2||!t2p1||!t2p2) return alert('Fill all player names'); if(new Set([t1p1,t1p2,t2p1,t2p2]).size!==4) return alert('Each player must be unique in a match'); record([t1p1,t1p2],[t2p1,t2p2],gameType,winner,'match'); ['t1p1','t1p2','t2p1','t2p2'].forEach(id=>document.getElementById(id).value=''); render()}
+document.getElementById('saveMatch').onclick=()=>{
+  const t1p1=clean(t1p1i.value),t1p2=clean(t1p2i.value),t2p1=clean(t2p1i.value),t2p2=clean(t2p2i.value),gameType=gameTypei.value,winner=winneri.value
+  if(!t1p1||!t1p2||!t2p1||!t2p2) return alert('Fill all player names')
+  if(new Set([t1p1,t1p2,t2p1,t2p2]).size!==4) return alert('Each player must be unique in a match')
+  record([t1p1,t1p2],[t2p1,t2p2],gameType,winner,'match')
+  ['t1p1','t1p2','t2p1','t2p2'].forEach(id=>document.getElementById(id).value='')
+  render()
+}
 const t1p1i=document.getElementById('t1p1'),t1p2i=document.getElementById('t1p2'),t2p1i=document.getElementById('t2p1'),t2p2i=document.getElementById('t2p2'),gameTypei=document.getElementById('gameType'),winneri=document.getElementById('winner')
-document.getElementById('submitScore').onclick=()=>{const a=clean(document.getElementById('sTeam1').value),b=clean(document.getElementById('sTeam2').value),g=document.getElementById('sGameType').value;if(!a||!b) return alert('Enter both team names'); const w=autoWinner(); if(!w) return alert('Scores are tied. Add more points before finishing.'); record([a,'Player 2'],[b,'Player 2'],g,w,'score',live.team1,live.team2); document.getElementById('sTeam1').value=''; document.getElementById('sTeam2').value=''; resetScore(); render(); closeFullscreen(); alert('Match finished')}
+document.getElementById('submitScore').onclick=()=>{
+  const a=clean(document.getElementById('sTeam1').value),b=clean(document.getElementById('sTeam2').value),g=document.getElementById('sGameType').value
+  if(!a||!b) return alert('Enter both team names')
+  const w=autoWinner()
+  if(!w) return alert('Scores are tied. Add more points before finishing.')
+  record([a,'Player 2'],[b,'Player 2'],g,w,'score',live.team1,live.team2)
+  document.getElementById('sTeam1').value=''
+  document.getElementById('sTeam2').value=''
+  resetScore()
+  render()
+  closeFullscreen()
+  alert('Match finished')
+}
 document.getElementById('sTeam1').addEventListener('input',render)
 document.getElementById('sTeam2').addEventListener('input',render)
 document.getElementById('sColor1').addEventListener('input',render)
