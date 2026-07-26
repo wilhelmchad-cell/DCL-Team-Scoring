@@ -92,12 +92,7 @@ button{background:var(--orange);color:#000;font-weight:900}
   line-height:1;
   display:block;
 }
-.score-zone{
-  flex:1;
-  border-radius:14px;
-  min-height:0;
-  pointer-events:auto;
-}
+.score-zone{flex:1;border-radius:14px;min-height:0;pointer-events:auto}
 .score-up{background:transparent}
 .score-down{background:rgba(255,255,255,.08);margin-top:8px;touch-action:manipulation}
 .score-down:active{background:rgba(0,0,0,.18)}
@@ -250,16 +245,41 @@ button{background:var(--orange);color:#000;font-weight:900}
 const KEY='dcl_team_tracker_v4'
 let state=load()
 let live={team1:0,team2:0}
+let current=state.current||{team1Name:'Team 1',team2Name:'Team 2',team1Color:'#ff8c00',team2Color:'#1e90ff'}
 let longPressTimers={1:null,2:null}
-function load(){return JSON.parse(localStorage.getItem(KEY)||JSON.stringify({matches:[],scores:[],players:{},teams:{},opponents:{}}))}
+
+function load(){
+  const base={matches:[],scores:[],players:{},teams:{},opponents:{},current:{team1Name:'Team 1',team2Name:'Team 2',team1Color:'#ff8c00',team2Color:'#1e90ff'}}
+  return JSON.parse(localStorage.getItem(KEY)||JSON.stringify(base))
+}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function clean(s){return s.trim().replace(/s+/g,' ').replace(/\bw/g,c=>c.toUpperCase())}
+function clean(s){return (s||'').trim().replace(/s+/g,' ').replace(/\bw/g,c=>c.toUpperCase())}
 function teamKey(p){return [...p].sort().join(' | ')}
 function ensurePlayer(n){if(!state.players[n]) state.players[n]={wins:0,losses:0}}
 function ensureTeam(p){let k=teamKey(p); if(!state.teams[k]) state.teams[k]={players:p,wins:0,losses:0}; return k}
 function autoWinner(){if(live.team1===live.team2) return null; return live.team1>live.team2?'team1':'team2'}
 function winnerLabel(){const w=autoWinner(); return w==='team1'?'Team 1':w==='team2'?'Team 2':'Tie'}
-function updateWinnerBadge(){document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel(); document.getElementById('fsMeta').textContent='Target '+document.getElementById('targetScore').value+' • '+winnerLabel()}
+
+function syncNames(){
+  current.team1Name = clean(document.getElementById('sTeam1').value) || 'Team 1'
+  current.team2Name = clean(document.getElementById('sTeam2').value) || 'Team 2'
+  current.team1Color = document.getElementById('sColor1').value
+  current.team2Color = document.getElementById('sColor2').value
+  state.current = {...current}
+  document.getElementById('liveTeam1Name').textContent = current.team1Name
+  document.getElementById('liveTeam2Name').textContent = current.team2Name
+  document.getElementById('fsTeam1').textContent = current.team1Name
+  document.getElementById('fsTeam2').textContent = current.team2Name
+  document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', current.team1Color)
+  document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', current.team2Color)
+  save()
+}
+
+function updateWinnerBadge(){
+  document.getElementById('autoWinnerBtn').textContent='Winner: '+winnerLabel()
+  document.getElementById('fsMeta').textContent='Target '+document.getElementById('targetScore').value+' • '+winnerLabel()
+}
+
 function syncScoreViews(){
   document.getElementById('score1').textContent=live.team1
   document.getElementById('score2').textContent=live.team2
@@ -268,9 +288,11 @@ function syncScoreViews(){
   updateWinnerBadge()
   save()
 }
+
 function adjustScore(team,delta){live['team'+team]=Math.max(0, live['team'+team]+delta); syncScoreViews()}
 function startLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=setTimeout(()=>adjustScore(team,-1),450)}
 function endLongPress(team){clearTimeout(longPressTimers[team]); longPressTimers[team]=null}
+
 function wireTeam(team){
   document.getElementById('up'+team).addEventListener('click',()=>adjustScore(team,1))
   document.getElementById('down'+team).addEventListener('click',()=>adjustScore(team,-1))
@@ -282,6 +304,7 @@ function wireTeam(team){
   z.addEventListener('pointerleave',()=>endLongPress(team))
 }
 wireTeam(1); wireTeam(2)
+
 function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null){
   [...team1,...team2].forEach(ensurePlayer)
   const k1=ensureTeam(team1), k2=ensureTeam(team2)
@@ -297,19 +320,18 @@ function record(team1,team2,gameType,winner,mode='match',score1=null,score2=null
   if(mode==='score') state.scores.unshift(entry); else state.matches.unshift(entry)
   save()
 }
+
 function resetScore(){live={team1:0,team2:0}; syncScoreViews()}
+
 function swapTeams(){
   [document.getElementById('sTeam1').value, document.getElementById('sTeam2').value] = [document.getElementById('sTeam2').value, document.getElementById('sTeam1').value]
   [document.getElementById('sColor1').value, document.getElementById('sColor2').value] = [document.getElementById('sColor2').value, document.getElementById('sColor1').value]
-  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1'
-  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2'
-  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent
-  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent
-  document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
-  document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
+  syncNames()
 }
-function openFullscreen(){document.getElementById('fullscreen').classList.add('show'); swapTeams(); syncScoreViews()}
+
+function openFullscreen(){document.getElementById('fullscreen').classList.add('show'); syncNames(); syncScoreViews()}
 function closeFullscreen(){document.getElementById('fullscreen').classList.remove('show')}
+
 function render(){
   document.getElementById('matchCount').textContent=state.matches.length
   document.getElementById('teamCount').textContent=Object.keys(state.teams).length
@@ -320,15 +342,20 @@ function render(){
   document.getElementById('oppTable').innerHTML=`<table class='list'><tr><th>Team</th><th>Opponent</th><th>W</th><th>L</th></tr>${Object.entries(state.opponents).flatMap(([team,opps])=>Object.entries(opps).map(([opp,rec])=>`<tr><td>${team}</td><td>${opp}</td><td>${rec.wins}</td><td>${rec.losses}</td></tr>`)).join('')||'<tr><td colspan="4">No opponent records yet.</td></tr>'}</table>`
   document.getElementById('matchTable').innerHTML=`<table class='list'><tr><th>Time</th><th>Game</th><th>Team 1</th><th>Team 2</th><th>Winner</th></tr>${state.matches.map(m=>`<tr><td>${m.time}</td><td>${m.gameType}</td><td>${m.team1.join(' / ')}</td><td>${m.team2.join(' / ')}</td><td>${m.winner==='team1'?'Team 1':'Team 2'}</td></tr>`).join('')||'<tr><td colspan="5">No matches yet.</td></tr>'}</table>`
   document.getElementById('scoreTable').innerHTML=`<table class='list'><tr><th>Time</th><th>Game</th><th>Team 1</th><th>Team 2</th><th>Score</th></tr>${state.scores.map(m=>`<tr><td>${m.time}</td><td>${m.gameType}</td><td>${m.team1.join(' / ')}</td><td>${m.team2.join(' / ')}</td><td>${m.score1}-${m.score2}</td></tr>`).join('')||'<tr><td colspan="5">No score games yet.</td></tr>'}</table>`
-  document.getElementById('liveTeam1Name').textContent=document.getElementById('sTeam1').value||'Team 1'
-  document.getElementById('liveTeam2Name').textContent=document.getElementById('sTeam2').value||'Team 2'
-  document.getElementById('fsTeam1').textContent=document.getElementById('liveTeam1Name').textContent
-  document.getElementById('fsTeam2').textContent=document.getElementById('liveTeam2Name').textContent
-  document.querySelector('.fs-side:first-child').style.setProperty('--teamColor', document.getElementById('sColor1').value)
-  document.querySelector('.fs-side:last-child').style.setProperty('--teamColor', document.getElementById('sColor2').value)
+  if(state.current){
+    current = {...current, ...state.current}
+    document.getElementById('sTeam1').value = current.team1Name || ''
+    document.getElementById('sTeam2').value = current.team2Name || ''
+    document.getElementById('sColor1').value = current.team1Color || '#ff8c00'
+    document.getElementById('sColor2').value = current.team2Color || '#1e90ff'
+  }
+  syncNames()
   syncScoreViews()
 }
+
 for(const b of document.querySelectorAll('[data-tab]')) b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab))}
+
+const t1p1i=document.getElementById('t1p1'),t1p2i=document.getElementById('t1p2'),t2p1i=document.getElementById('t2p1'),t2p2i=document.getElementById('t2p2'),gameTypei=document.getElementById('gameType'),winneri=document.getElementById('winner')
 document.getElementById('saveMatch').onclick=()=>{
   const t1p1=clean(t1p1i.value),t1p2=clean(t1p2i.value),t2p1=clean(t2p1i.value),t2p2=clean(t2p2i.value),gameType=gameTypei.value,winner=winneri.value
   if(!t1p1||!t1p2||!t2p1||!t2p2) return alert('Fill all player names')
@@ -337,12 +364,13 @@ document.getElementById('saveMatch').onclick=()=>{
   ['t1p1','t1p2','t2p1','t2p2'].forEach(id=>document.getElementById(id).value='')
   render()
 }
-const t1p1i=document.getElementById('t1p1'),t1p2i=document.getElementById('t1p2'),t2p1i=document.getElementById('t2p1'),t2p2i=document.getElementById('t2p2'),gameTypei=document.getElementById('gameType'),winneri=document.getElementById('winner')
+
 document.getElementById('submitScore').onclick=()=>{
   const a=clean(document.getElementById('sTeam1').value),b=clean(document.getElementById('sTeam2').value),g=document.getElementById('sGameType').value
   if(!a||!b) return alert('Enter both team names')
   const w=autoWinner()
   if(!w) return alert('Scores are tied. Add more points before finishing.')
+  syncNames()
   record([a,'Player 2'],[b,'Player 2'],g,w,'score',live.team1,live.team2)
   document.getElementById('sTeam1').value=''
   document.getElementById('sTeam2').value=''
@@ -351,10 +379,11 @@ document.getElementById('submitScore').onclick=()=>{
   closeFullscreen()
   alert('Match finished')
 }
-document.getElementById('sTeam1').addEventListener('input',render)
-document.getElementById('sTeam2').addEventListener('input',render)
-document.getElementById('sColor1').addEventListener('input',render)
-document.getElementById('sColor2').addEventListener('input',render)
+
+document.getElementById('sTeam1').addEventListener('input',syncNames)
+document.getElementById('sTeam2').addEventListener('input',syncNames)
+document.getElementById('sColor1').addEventListener('input',syncNames)
+document.getElementById('sColor2').addEventListener('input',syncNames)
 document.getElementById('targetScore').addEventListener('change',updateWinnerBadge)
 render()
 </script>
